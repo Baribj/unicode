@@ -1,0 +1,22 @@
+html {
+  overflow-y: scroll; /* prevent screen jump*/
+}
+
+html,
+body {
+  display: flex;
+  min-height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
