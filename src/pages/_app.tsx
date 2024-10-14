@@ -1,14 +1,16 @@
+import { UserContext } from "@/modules/accounts/UserContext";
 import DashboardLayout from "@/modules/dashboard/shared/Layout";
 import useMuiBreakPoints from "@/modules/shared/hooks/useMuiBreakPoints";
 import Loading from "@/modules/shared/Loading";
 import CustomThemeProvider from "@/modules/shared/theme/CustomThemeProvider";
+import { User } from "@/schema/User";
 import "@/styles/globals.css";
 import { CssBaseline } from "@mui/material";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { SnackbarProvider } from "notistack";
-import { createContext, ReactNode } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
 export const muiBreakPointsContext = createContext({ code: "xl", value: 1920 }); // Context so we don't end up attaching too many events to the DOM
 
@@ -25,8 +27,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const currentBreakPoint = useMuiBreakPoints();
 
+  const [user, setUser] = useState<User | null>(null);
+
+  // Making this globally available just for demo. Not really needed, and causes the whole app to re-render.
+  useEffect(() => {
+    setUser(pageProps.user);
+  }, []);
+
   return (
-    <>
+    <UserContext.Provider value={{ user, setUser }}>
       <CustomThemeProvider>
         <CssBaseline enableColorScheme>
           <SnackbarProvider maxSnack={3}>
@@ -46,6 +55,6 @@ export default function App({ Component, pageProps }: AppProps) {
           </SnackbarProvider>
         </CssBaseline>
       </CustomThemeProvider>
-    </>
+    </UserContext.Provider>
   );
 }

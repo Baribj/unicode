@@ -1,0 +1,107 @@
+import React, { createContext, useContext, useState } from "react";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { useDroppable } from "@dnd-kit/core";
+import { Box, Grid2 } from "@mui/material";
+import { Task, TaskStatus } from "@/schema/Task";
+import DraggableTaskCard from "./DraggableTaskCard";
+import { boardColumns } from "@/pages/dashboard/workspace/boards/[id]";
+import useFetch from "@/modules/shared/hooks/useFetch";
+
+interface Props {
+  task: Task;
+}
+
+const UpdatingTaskStatusContext = createContext(false);
+
+export function useUpdatingTaskStatusContext() {
+  return useContext(UpdatingTaskStatusContext);
+}
+
+export default function TaskRow({ task }: Props) {
+  const { makeRequest, loading } = useFetch();
+
+  const [taskStatus, setTaskStatus] = useState<TaskStatus>(task.status);
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    console.log(event);
+
+    const fromContainer = active.data.current?.containerId;
+    const toContainer = over.data.current?.containerId;
+
+    console.log({ fromContainer, toContainer });
+
+    if (fromContainer !== toContainer) {
+      setTaskStatus(over.data.current?.containerId);
+
+      makeRequest(
+        `/tasks/${active.id}`,
+        { showSuccessSnackbar: true },
+        { method: "PATCH", body: { status: over.data.current?.containerId } }
+      );
+    }
+  };
+
+  return (
+    <DndContext onDragEnd={handleDragEnd}>
+      <Grid2 container spacing={3}>
+        {boardColumns.map((column, index) => {
+          return (
+            <Grid2 key={column.id} size={{ xs: 12 / boardColumns.length }}>
+              <Box
+                sx={{
+                  height: "100%",
+                  borderLeft: index > 0 ? 1 : 0,
+                  borderColor: "divider",
+                  marginLeft: -2,
+                  px: 2,
+                  py: 3,
+                }}
+              >
+                <UpdatingTaskStatusContext.Provider value={loading}>
+                  <Container
+                    id={column.id}
+                    task={taskStatus === column.id ? task : null}
+                  />
+                </UpdatingTaskStatusContext.Provider>
+              </Box>
+            </Grid2>
+          );
+        })}
+      </Grid2>
+    </DndContext>
+  );
+}
+
+interface ContainerProps {
+  id: string;
+  task: Task | null;
+}
+
+function Container({ id, task }: ContainerProps) {
+  const loading = useUpdatingTaskStatusContext();
+
+  const { isOver, setNodeRef } = useDroppable({
+    id,
+    data: { containerId: id },
+  });
+
+  return (
+    <Box
+      ref={setNodeRef}
+      sx={{
+        height: "100%",
+        borderRadius: 2,
+        borderColor: "divider",
+        borderStyle: "dashed",
+        borderWidth: isOver ? 1 : 0,
+        pointerEvents: loading ? "none" : "all", // quick hack, pointerEvents makes events tracking awkward
+        opacity: loading ? 0.5 : 1,
+      }}
+    >
+      {task && <DraggableTaskCard task={task} containerId={id} />}
+    </Box>
+  );
+}

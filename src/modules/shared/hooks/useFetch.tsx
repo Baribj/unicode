@@ -23,10 +23,10 @@ export default function useFetch() {
     {
       isExternal = false,
       queryParams = {},
-      showSuccessSnackbar = true,
+      showSuccessSnackbar = false,
       showFaiLSnackbar = true,
     }: useFetchOptions = {},
-    init?: RequestInit
+    init?: { body: { [key: string]: any } } & Omit<RequestInit, "body">
   ): Promise<ApiSuccessResponse<Result>> {
     setLoading(true);
 
@@ -46,11 +46,11 @@ export default function useFetch() {
         body: init?.body ? JSON.stringify(init?.body) : null,
       });
 
-      if (!response.ok) {
-        throw new Error();
-      }
-
       const res = await response.json();
+
+      if (!response.ok) {
+        throw new Error(res.errors[0].detail);
+      }
 
       if (showSuccessSnackbar) {
         const message = res.message?.detail || "Operation was successful";
@@ -75,6 +75,7 @@ export default function useFetch() {
         const message = err.message || "Ops, something went wrong";
         enqueueSnackbar(message, {
           variant: "error",
+          autoHideDuration: 3000,
           action: (snackBarKey) => {
             return SnackbarActionButton(() => {
               closeSnackbar(snackBarKey);

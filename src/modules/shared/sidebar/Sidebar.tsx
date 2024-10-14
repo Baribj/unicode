@@ -114,10 +114,10 @@ export default function Sidebar({
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <Avatar sx={{ bgcolor: "primary.main", borderRadius: 2 }}>
-              {user.firstName[0]}
+              {user?.name[0]}
             </Avatar>
             <div>
-              <Typography>{user.firstName}</Typography>
+              <Typography>{user?.name}</Typography>
               <Typography
                 variant="caption"
                 component="p"

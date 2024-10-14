@@ -6,63 +6,14 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { Box, Grid2 } from "@mui/material";
 import { Board } from "@/schema/Board";
 import BoardCard from "@/modules/dashboard/boards/BoardCard";
+import { getSession } from "next-auth/react";
+import { GetServerSidePropsContext } from "next";
 
 interface Props {
   boards: Board[];
 }
 
-export default function Boards(/* { boards }: Props */) {
-  const boards: Board[] = [
-    {
-      id: "1",
-      title: "The Ultimate Product Design Hub The Ultimate Product Design Hub",
-      description:
-        "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
-      user: {
-        id: "11",
-        name: "Ahmed",
-      },
-      type: "engineering",
-      createdAt: "15-05-2024",
-    },
-    {
-      id: "2",
-      title: "The Ultimate Product Design Hub",
-      description:
-        "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
-      user: {
-        id: "11",
-        name: "Ahmed",
-      },
-      type: "product",
-      createdAt: "15-05-2024",
-    },
-    {
-      id: "3",
-      title: "The Ultimate Product Design Hub",
-      description:
-        "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
-      user: {
-        id: "11",
-        name: "Ahmed",
-      },
-      type: "design",
-      createdAt: "15-05-2024",
-    },
-    {
-      id: "4",
-      title: "The Ultimate Product Design Hub",
-      description:
-        "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
-      user: {
-        id: "11",
-        name: "Ahmed",
-      },
-      type: "qa",
-      createdAt: "15-05-2024",
-    },
-  ];
-
+export default function Boards({ boards }: Props) {
   return (
     <>
       <Head>
@@ -72,7 +23,7 @@ export default function Boards(/* { boards }: Props */) {
       <PageHeader
         title="Boards"
         loadingButtonProps={{
-          text: "Add",
+          text: "Create",
           href: "/dashboard/workspace/boards/new",
           startIcon: <AddRoundedIcon />,
         }}
@@ -92,20 +43,86 @@ export default function Boards(/* { boards }: Props */) {
   );
 }
 
-/* export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<{ props: Props }> {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
-    const res = await fetchWrapper<ProductSummary[]>("products", {}, context);
+    const session = await getSession(context);
 
-    const products = res.result;
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/accounts/log-in",
+          permanent: false,
+        },
+      };
+    }
 
-    const count = res.pagination.count;
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "boards");
+
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    const data = await response.json();
+
+    const boards = data.result;
 
     return {
-      props: { products, count },
+      props: {
+        boards,
+      },
     };
   } catch (err) {
     throw err;
   }
-} */
+}
+
+const boards = [
+  {
+    id: "1",
+    title: "The Ultimate Product Design Hub The Ultimate Product Design Hub",
+    description:
+      "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
+    user: {
+      id: "11",
+      name: "Ahmed",
+    },
+    type: "engineering",
+    createdAt: "15-05-2024",
+  },
+  {
+    id: "2",
+    title: "The Ultimate Product Design Hub",
+    description:
+      "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
+    user: {
+      id: "11",
+      name: "Ahmed",
+    },
+    type: "product",
+    createdAt: "15-05-2024",
+  },
+  {
+    id: "3",
+    title: "The Ultimate Product Design Hub",
+    description:
+      "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
+    user: {
+      id: "11",
+      name: "Ahmed",
+    },
+    type: "design",
+    createdAt: "15-05-2024",
+  },
+  {
+    id: "4",
+    title: "The Ultimate Product Design Hub",
+    description:
+      "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
+    user: {
+      id: "11",
+      name: "Ahmed",
+    },
+    type: "qa",
+    createdAt: "15-05-2024",
+  },
+];

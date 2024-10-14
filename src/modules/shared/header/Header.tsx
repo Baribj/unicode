@@ -13,10 +13,8 @@ import { useRouter } from "next/router";
 import BasicDialog from "../components/dialogs/BasicDialog";
 import { ThemeModeContext } from "../theme/CustomThemeProvider";
 import { setLocalStorageThemeMode } from "../utils/localStorageHelpers";
-import {
-  getEmptyUserObject,
-  useUserContext,
-} from "@/modules/accounts/UserContext";
+import { useUserContext } from "@/modules/accounts/UserContext";
+import { signOut } from "next-auth/react";
 
 interface Props {
   setShowTempSidebar: (newState: boolean) => void;
@@ -29,7 +27,7 @@ export default function Header({
 }: Props) {
   const { themeMode, setThemeMode } = useContext(ThemeModeContext);
 
-  const { makeRequest, loading: loading } = useFetch();
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   const router = useRouter();
 
@@ -108,15 +106,12 @@ export default function Header({
           color="error"
           confirmButtonProps={{
             onClick: () => {
-              makeRequest("auth/sign-out", { showSuccessSnackbar: true })
-                .then(() => {
-                  setUser(getEmptyUserObject());
-                  router.push("/accounts/log-in");
-                })
-                .catch(() => {});
+              setUser(null);
+              setIsSigningOut(true);
+              signOut({ callbackUrl: "/accounts/log-in" });
               setAccountButtonElement(null);
             },
-            loading,
+            loading: isSigningOut,
           }}
         >
           <Typography variant="body2" color="text.primary">

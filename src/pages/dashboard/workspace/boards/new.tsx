@@ -7,6 +7,7 @@ import { boardTypes, NewBoard, newBoardSchema } from "@/schema/Board";
 import { Formik } from "formik";
 import useFetch from "@/modules/shared/hooks/useFetch";
 import { getBoardTypeInfo } from "@/modules/dashboard/boards/utils/getBoardTypeTitle";
+import { useRouter } from "next/router";
 
 const initialValues: NewBoard = {
   title: "",
@@ -16,6 +17,8 @@ const initialValues: NewBoard = {
 
 export default function NewBoards() {
   const { makeRequest } = useFetch();
+
+  const router = useRouter();
 
   return (
     <>
@@ -28,12 +31,16 @@ export default function NewBoards() {
         validationSchema={newBoardSchema}
         validateOnMount
         onSubmit={(values, helpers) => {
-          makeRequest("/hello", { showSuccessSnackbar: true })
+          makeRequest(
+            "/boards",
+            { showSuccessSnackbar: true },
+            { method: "POST", body: values }
+          )
             .then((res) => {
-              console.log(res);
+              router.push("");
             })
-            .catch(() => {})
-            .finally(() => {
+            .catch((err) => {
+              console.log(err);
               helpers.setSubmitting(false);
             });
         }}

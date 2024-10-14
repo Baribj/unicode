@@ -3,6 +3,10 @@ import NoResultsIcon from "@/modules/shared/icons/NoResultsIcon";
 /* import { UserContext, useUserContext } from "@/modules/accounts/UserContext"; */
 import Head from "next/head";
 import { getPageTitle } from "@/modules/shared/utils/getPageTitle";
+import { getSession } from "next-auth/react";
+import { GetServerSidePropsContext } from "next";
+import { PageProps } from "@/schema/PageProps";
+import { User } from "next-auth";
 
 export default function Home() {
   const user = {
@@ -41,4 +45,21 @@ export default function Home() {
       </Stack>
     </>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
+
+  if (session) {
+    return {
+      props: { user: session.user },
+    };
+  } else {
+    return {
+      redirect: {
+        destination: "/accounts/log-in",
+        permanent: false,
+      },
+    };
+  }
 }

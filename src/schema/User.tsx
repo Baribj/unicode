@@ -2,85 +2,58 @@ import { ObjectId } from "mongodb";
 import * as Yup from "yup";
 
 export interface User {
-  firstName: string;
-  lastName: string;
+  id: string;
+  name: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
-  status: "active" | "blocked";
-  lastLogin: string;
-  address: {
-    country: {
-      name: string;
-      code: string;
-    };
-    state: {
-      name: string;
-      code: string;
-    };
-  };
 }
 
-export interface UserModel
-  extends Omit<User, "createdAt" | "updatedAt" | "lastLogin" | "address"> {
+export interface UserModel extends Omit<User, "id"> {
   _id: ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
-  lastLogin: Date;
-  siteId: ObjectId;
   password: string;
-  address: {
-    countryCode: string;
-    stateCode: string;
-    createdAt: string;
-    updatedAt: string;
-  };
 }
 
-export const userSchema: Yup.ObjectSchema<
-  User & { password?: string; otp?: string }
-> = Yup.object()
+export const userSchema: Yup.ObjectSchema<User> = Yup.object()
   .required()
   .strict()
   .noUnknown()
   .shape({
-    firstName: Yup.string().required(),
-    lastName: Yup.string().required(),
+    id: Yup.string().required(),
+    name: Yup.string().required(),
+    email: Yup.string().required(),
+  });
+
+export interface SignUpRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export const signUpRequestSchema: Yup.ObjectSchema<SignUpRequest> = Yup.object()
+  .required()
+  .strict()
+  .noUnknown()
+  .shape({
+    name: Yup.string().required("Name is required"),
     email: Yup.string()
-      .required()
-      .matches(
-        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        "Invalid email address"
-      ),
-    createdAt: Yup.string().required(),
-    updatedAt: Yup.string().required(),
-    status: Yup.string()
-      .required()
-      .oneOf(["active" as const]),
-    lastLogin: Yup.string().required(),
-    address: Yup.object()
-      .required()
-      .strict()
-      .noUnknown()
-      .shape({
-        country: Yup.object().required().strict().noUnknown().shape({
-          name: Yup.string().required(),
-          code: Yup.string().required(),
-        }),
-        state: Yup.object().required().strict().noUnknown().shape({
-          name: Yup.string().required(),
-          code: Yup.string().required(),
-        }),
-      }),
-
+      .required("Email address is required")
+      .email("Please provide a valid email address"),
     password: Yup.string()
-      .min(12)
-      .when([], (password, schema) => {
-        if (password !== undefined) {
-          return schema.min(12);
-        }
-        return schema;
-      }),
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters long"),
+  });
 
-    otp: Yup.string(),
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export const logInRequestSchema: Yup.ObjectSchema<LoginRequest> = Yup.object()
+  .required()
+  .strict()
+  .noUnknown()
+  .shape({
+    email: Yup.string().required("Email address is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters long"),
   });
