@@ -18,7 +18,7 @@ This app is built on top off next.js with a custom server to utilize socket.io
 
 4- Drag & Drop task to update its status.
 
-5- Task status will be updated for all users who are currently watching that Board.
+5- Task status will be updated for all users who are currently watching that Board. You can test this by singing in with two different users on two different browsers.
 
 ## Local Environment
 
