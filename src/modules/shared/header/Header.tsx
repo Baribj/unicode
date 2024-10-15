@@ -13,8 +13,9 @@ import { useRouter } from "next/router";
 import BasicDialog from "../components/dialogs/BasicDialog";
 import { ThemeModeContext } from "../theme/CustomThemeProvider";
 import { setLocalStorageThemeMode } from "../utils/localStorageHelpers";
-import { useUserContext } from "@/modules/accounts/UserContext";
 import { signOut } from "next-auth/react";
+import { useDispatch } from "react-redux";
+import { clearUser } from "@/features/user/userSlice";
 
 interface Props {
   setShowTempSidebar: (newState: boolean) => void;
@@ -31,7 +32,7 @@ export default function Header({
 
   const router = useRouter();
 
-  const { setUser } = useUserContext();
+  const dispatch = useDispatch();
 
   const [accountButtonElement, setAccountButtonElement] =
     useState<HTMLButtonElement | null>(null);
@@ -106,7 +107,7 @@ export default function Header({
           color="error"
           confirmButtonProps={{
             onClick: () => {
-              setUser(null);
+              dispatch(clearUser());
               setIsSigningOut(true);
               signOut({ callbackUrl: "/accounts/log-in" });
               setAccountButtonElement(null);

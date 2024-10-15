@@ -11,9 +11,13 @@ import { getSession } from "next-auth/react";
 import TaskRow from "@/modules/dashboard/boards/TaskRow";
 import { Task, TaskStatus } from "@/schema/Task";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskDialog from "@/modules/dashboard/boards/TaskDialog";
 import { ApiSuccessResponse } from "@/schema/ApiResponse";
+import { socket } from "@/services/socket";
+import { Socket } from "socket.io-client";
+import { closeSnackbar, enqueueSnackbar } from "notistack";
+import SnackbarActionButton from "@/modules/shared/components/SnackbarActionButton";
 
 interface Props {
   board: Board;
@@ -33,8 +37,54 @@ export const boardColumns: BoardColumn[] = [
   { id: "completed", title: "Completed", color: "success.main" },
 ];
 
-export default function BoardPage({ board, tasks }: Props) {
+export default function BoardPage({ board, tasks: passedTasks }: Props) {
   const [showCreateTaskDialog, setShowCreateTaskDialog] = useState(false);
+
+  const [tasks, setTasks] = useState(passedTasks);
+
+  function updateTaskStatus(taskId: string, newStatus: TaskStatus) {
+    setTasks((prev) =>
+      prev.map((task) => {
+        if (task.id === taskId) {
+          return { ...task, status: newStatus };
+        } else return task;
+      })
+    );
+  }
+
+  useEffect(() => {
+    const connectedSocket = socket as Socket;
+
+    function onTaskStatusChange(value: any) {
+      updateTaskStatus(value.taskId, value.newStatus);
+
+      const statusTitle = boardColumns.find(
+        (status) => status.id === value.newStatus
+      )!.title;
+
+      enqueueSnackbar(
+        `Task #${value.taskId} status changed to ${statusTitle}`,
+        {
+          variant: "success",
+          autoHideDuration: 4000,
+          action: (snackBarKey) => {
+            return SnackbarActionButton(() => {
+              closeSnackbar(snackBarKey);
+            });
+          },
+          style: {
+            flexWrap: "nowrap",
+          },
+        }
+      );
+    }
+
+    connectedSocket.on("task", onTaskStatusChange);
+
+    return () => {
+      connectedSocket.off("task", onTaskStatusChange);
+    };
+  }, []);
 
   return (
     <>
@@ -110,7 +160,7 @@ export default function BoardPage({ board, tasks }: Props) {
           {tasks.map((task) => {
             return (
               <Box key={task.id} borderBottom={1} borderColor="divider">
-                <TaskRow task={task} />
+                <TaskRow task={task} updateTaskStatus={updateTaskStatus} />
               </Box>
             );
           })}

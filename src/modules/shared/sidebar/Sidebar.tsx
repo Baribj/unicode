@@ -14,8 +14,11 @@ import { ComponentType } from "react";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ManageAccountsRoundedIcon from "@mui/icons-material/ManageAccountsRounded";
 import { useRouter } from "next/router";
-import { useUserContext } from "@/modules/accounts/UserContext";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import { useSelector } from "react-redux";
+
+import { User } from "next-auth";
+import { ReduxState } from "@/features/user/userSlice";
 
 interface Props {
   sidebarWidth: string;
@@ -47,14 +50,6 @@ const taskManagementItems: Tab[] = [
   },
 ];
 
-const settingItems = [
-  {
-    title: "Account",
-    Icon: ManageAccountsRoundedIcon,
-    url: "/dashboard/settings/account",
-  },
-];
-
 export default function Sidebar({
   sidebarWidth,
   showTempSidebar,
@@ -65,7 +60,7 @@ export default function Sidebar({
 
   const [activeTab, setActiveTab] = useState("");
 
-  const { user } = useUserContext();
+  const user = useSelector((state: ReduxState) => state.user);
 
   const currentBreakPoint = useContext(muiBreakPointsContext);
 
@@ -75,7 +70,7 @@ export default function Sidebar({
   }
 
   useEffect(() => {
-    const allTabs = [...generalItems, ...taskManagementItems, ...settingItems];
+    const allTabs = [...generalItems, ...taskManagementItems];
 
     allTabs.forEach((tab) => {
       if (router.asPath.includes(tab.url)) {
@@ -114,7 +109,7 @@ export default function Sidebar({
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <Avatar sx={{ bgcolor: "primary.main", borderRadius: 2 }}>
-              {user?.name[0]}
+              {user?.name?.[0]}
             </Avatar>
             <div>
               <Typography>{user?.name}</Typography>
@@ -161,24 +156,6 @@ export default function Sidebar({
                 Workspace
               </Typography>
               {taskManagementItems.map((item) => {
-                return (
-                  <SidebarItem
-                    key={item.title}
-                    tab={item}
-                    active={activeTab === item.url}
-                    handleTabChange={handleTabChange}
-                  />
-                );
-              })}
-            </Box>
-          </section>
-
-          <section>
-            <Box px={3}>
-              <Typography variant="caption" component="p" mb={2}>
-                Settings
-              </Typography>
-              {settingItems.map((item) => {
                 return (
                   <SidebarItem
                     key={item.title}

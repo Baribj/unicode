@@ -31,7 +31,7 @@ export default function useFetch() {
     setLoading(true);
 
     try {
-      let url = isExternal ? endPoint : `${api}/${endPoint}`;
+      let url = isExternal ? endPoint : `${api}${endPoint}`;
 
       if (Object.keys(queryParams).length > 0) {
         url += "?" + serializeQueryParams(queryParams);

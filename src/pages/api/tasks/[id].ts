@@ -45,6 +45,15 @@ async function patchTask(req: NextApiRequest, res: NextApiResponse) {
       { $set: { status: body.status, updatedAt: now } }
     );
 
+    const io = req.socket.server.io;
+
+    // Should probably fetch the Task and Board and pass their names instead of IDs here
+    io.emit("task", {
+      taskId: taskId,
+      newStatus: body.status,
+      userId: session.user.id,
+    });
+
     res
       .status(200)
       .json(getSuccessResponse({ detail: "Task updated successfully!" }));

@@ -7,11 +7,11 @@ import { getSession } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
 import { PageProps } from "@/schema/PageProps";
 import { User } from "next-auth";
+import { useSelector } from "react-redux";
+import { ReduxState } from "@/features/user/userSlice";
 
 export default function Home() {
-  const user = {
-    firstName: "Ahmed",
-  };
+  const user = useSelector((state: ReduxState) => state.user);
 
   return (
     <>
@@ -22,7 +22,7 @@ export default function Home() {
       <Stack spacing={4} height="100%">
         <div>
           <Typography component="h1" variant="h5" mb={0.5}>
-            Welcome back, {user.firstName} 👋
+            Welcome back, {user.name} 👋
           </Typography>
 
           <Typography color="text.secondary" mb={0.5}>

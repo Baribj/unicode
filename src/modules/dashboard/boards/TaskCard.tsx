@@ -17,6 +17,7 @@ function truncateText(text: string) {
 }
 
 export default function TaskCard({
+  id,
   title,
   description,
   status,
@@ -64,10 +65,18 @@ export default function TaskCard({
 
       <Box
         display="flex"
-        justifyContent={loading ? "space-between" : "end"}
+        justifyContent={
+          loading || status === "completed" ? "space-between" : "end"
+        }
         alignItems="center"
       >
         {loading && <CircularProgress size={25} />}
+
+        {status === "completed" && !loading && (
+          <div className={`${status}`}>
+            <div className="checkmark"></div>
+          </div>
+        )}
 
         <Button
           variant="outlined"

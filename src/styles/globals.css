@@ -20,3 +20,42 @@ body {
   opacity: 0.6;
   pointer-events: none;
 }
+
+.checkmark {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid green;
+  position: relative;
+}
+
+.checkmark::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 12px;
+  border-right: 2px solid green;
+  border-bottom: 2px solid green;
+  transform: rotate(45deg);
+  top: 3px;
+  left: 8px;
+}
+
+.completed .checkmark {
+  opacity: 1;
+  animation: explode 1s ease-in-out;
+}
+
+@keyframes explode {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
