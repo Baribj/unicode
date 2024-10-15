@@ -47,3 +47,5 @@ NEXT_PUBLIC_API_URL="http://localhost:3000/api/"
 1- Localization
 
 2- Dockerization
+
+There are many edge cases that are not covered. For example, if user creates a new task, other users won't be notified or get the updates.

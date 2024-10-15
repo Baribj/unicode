@@ -106,17 +106,15 @@ async function postTask(req: NextApiRequest, res: NextApiResponse) {
       throw new Error();
     }
 
-    await Promise.all([
-      db.collection<TaskModel>("tasks").insertOne({
-        _id: new ObjectId(),
-        ...newTask,
-        status: "toDo",
-        boardId: new ObjectId(newTask.boardId),
-        assigneeId: null,
-        createdAt: now,
-        updatedAt: now,
-      }),
-    ]);
+    await db.collection<TaskModel>("tasks").insertOne({
+      _id: new ObjectId(),
+      ...newTask,
+      status: "toDo",
+      boardId: new ObjectId(newTask.boardId),
+      assigneeId: null,
+      createdAt: now,
+      updatedAt: now,
+    });
 
     res
       .status(200)

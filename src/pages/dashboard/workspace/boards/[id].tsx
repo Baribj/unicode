@@ -42,6 +42,10 @@ export default function BoardPage({ board, tasks: passedTasks }: Props) {
 
   const [tasks, setTasks] = useState(passedTasks);
 
+  useEffect(() => {
+    setTasks(passedTasks);
+  }, [passedTasks]);
+
   function updateTaskStatus(taskId: string, newStatus: TaskStatus) {
     setTasks((prev) =>
       prev.map((task) => {
