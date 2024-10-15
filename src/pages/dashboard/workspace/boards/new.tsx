@@ -39,7 +39,7 @@ export default function NewBoards() {
             { method: "POST", body: values }
           )
             .then(() => {
-              router.push("");
+              router.push("/dashboard/workspace/boards");
             })
             .catch((err) => {
               console.log(err);
