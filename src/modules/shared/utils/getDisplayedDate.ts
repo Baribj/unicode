@@ -1,5 +1,5 @@
 export default function getDisplayedDate(date: string) {
-  const dateObj = new Date();
+  const dateObj = new Date(date);
 
   return dateObj.toLocaleDateString();
 }

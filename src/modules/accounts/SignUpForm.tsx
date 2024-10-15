@@ -40,16 +40,21 @@ export default function SignUpForm() {
       validationSchema={singUpFromSchema}
       validateOnMount
       onSubmit={(values, helpers) => {
-        const { passwordConfirmation, ...reqBody } = values;
-
         makeRequest(
           "auth/sign-up",
           {
             showSuccessSnackbar: true,
           },
-          { method: "POST", body: reqBody }
+          {
+            method: "POST",
+            body: {
+              name: values.name,
+              password: values.password,
+              email: values.email,
+            },
+          }
         )
-          .then((res) => {
+          .then(() => {
             signIn("credentials", {
               email: values.email,
               password: values.password,

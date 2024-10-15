@@ -1,7 +1,6 @@
 import { Stack } from "@mui/system";
 import { ButtonBase, Typography } from "@mui/material";
 import { MouseEvent, useState, useMemo } from "react";
-
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Link from "next/link";
 import SingleSelectDropDown from "../components/SingleSelectDropDown";
@@ -79,7 +78,6 @@ export default function SidebarItem({ tab, active, handleTabChange }: Props) {
             <Typography variant="body2" ml={2}>
               {title}
             </Typography>
-            {/*using ml={} because MUI issue with App dir, spacing={} on Stack cause jittering*/}
           </Stack>
           <KeyboardArrowRightIcon fontSize="small" />
         </Stack>

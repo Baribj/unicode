@@ -1,23 +1,11 @@
 import { ApiFailResponse, ApiSuccessResponse } from "@/schema/ApiResponse";
-import { SignUpRequest, signUpRequestSchema, UserModel } from "@/schema/User";
-import { dbClientPromise, getDb } from "@/server/db";
+import { getDb } from "@/server/db";
 import handleError from "@/server/utils/errorHandler";
 import getSuccessResponse from "@/server/utils/response/getSuccessResponse";
 import { ObjectId } from "mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
-import bcrypt from "bcrypt";
-import {
-  AggregatedBoardModel,
-  Board,
-  BoardModel,
-  BoardUser,
-  BoardUserConnectionModel,
-  BoardUserModel,
-  NewBoard,
-  newBoardSchema,
-} from "@/schema/Board";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]"; // Adjust the path as needed
+import { authOptions } from "../auth/[...nextauth]";
 import {
   AggregatedTaskModel,
   NewTask,

@@ -12,12 +12,9 @@ import { useState, useContext, useEffect } from "react";
 import { muiBreakPointsContext } from "@/pages/_app";
 import { ComponentType } from "react";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import ManageAccountsRoundedIcon from "@mui/icons-material/ManageAccountsRounded";
 import { useRouter } from "next/router";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { useSelector } from "react-redux";
-
-import { User } from "next-auth";
 import { ReduxState } from "@/features/user/userSlice";
 
 interface Props {

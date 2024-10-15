@@ -1,9 +1,8 @@
 import ContainedDialog from "@/modules/shared/components/dialogs/ContainedDialog";
-import DialogWrapper from "@/modules/shared/components/dialogs/DialogWrapper";
 import useFetch from "@/modules/shared/hooks/useFetch";
 import { Board } from "@/schema/Board";
-import { NewTask, newTaskSchema, Task } from "@/schema/Task";
-import { TextField, Typography } from "@mui/material";
+import { NewTask, newTaskSchema } from "@/schema/Task";
+import { TextField } from "@mui/material";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -41,7 +40,7 @@ export default function TaskDialog(props: TaskDialogProps) {
           { showSuccessSnackbar: true },
           { method: "POST", body: values }
         )
-          .then((res) => {
+          .then(() => {
             props.onClose();
             router.replace(`/dashboard/workspace/boards/${props.board.id}`);
           })
@@ -59,7 +58,6 @@ export default function TaskDialog(props: TaskDialogProps) {
         handleChange,
         handleBlur,
         isValid,
-        handleSubmit,
         isSubmitting,
         submitForm,
       }) => (

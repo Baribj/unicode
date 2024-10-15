@@ -1,8 +1,7 @@
-import { logInRequestSchema, signUpRequestSchema } from "@/schema/User";
+import { logInRequestSchema } from "@/schema/User";
 import { LoadingButton } from "@mui/lab";
 import { Stack, TextField } from "@mui/material";
 import { Formik } from "formik";
-import useFetch from "../shared/hooks/useFetch";
 import { signIn } from "next-auth/react";
 
 const initialValues = {
@@ -22,7 +21,7 @@ export default function LoginForm() {
           redirect: true,
           callbackUrl: "/dashboard",
         })
-          .then((res) => {})
+          .then(() => {})
           .catch((err) => {
             console.log(err);
             helpers.setSubmitting(false);

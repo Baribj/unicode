@@ -15,7 +15,7 @@ const userSlice = createSlice({
       return action.payload;
     },
 
-    clearUser: (state) => {
+    clearUser: () => {
       return { id: "", name: "", email: "" };
     },
   },

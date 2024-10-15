@@ -21,7 +21,10 @@ body {
   pointer-events: none;
 }
 
-.checkmark {
+.task-completed-checkmark-container {
+}
+
+.task-completed-checkmark-container .checkmark {
   width: 25px;
   height: 25px;
   border-radius: 50%;
@@ -29,7 +32,7 @@ body {
   position: relative;
 }
 
-.checkmark::after {
+.task-completed-checkmark-container .checkmark::after {
   content: "";
   position: absolute;
   width: 6px;
@@ -41,7 +44,7 @@ body {
   left: 8px;
 }
 
-.completed .checkmark {
+.task-completed-checkmark-container .completed .checkmark {
   opacity: 1;
   animation: explode 1s ease-in-out;
 }

@@ -8,8 +8,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { muiBreakPointsContext } from "@/pages/_app";
 import SingleSelectDropDown from "../components/SingleSelectDropDown";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import useFetch from "../hooks/useFetch";
-import { useRouter } from "next/router";
 import BasicDialog from "../components/dialogs/BasicDialog";
 import { ThemeModeContext } from "../theme/CustomThemeProvider";
 import { setLocalStorageThemeMode } from "../utils/localStorageHelpers";
@@ -29,8 +27,6 @@ export default function Header({
   const { themeMode, setThemeMode } = useContext(ThemeModeContext);
 
   const [isSigningOut, setIsSigningOut] = useState(false);
-
-  const router = useRouter();
 
   const dispatch = useDispatch();
 

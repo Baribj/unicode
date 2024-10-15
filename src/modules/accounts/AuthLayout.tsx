@@ -27,14 +27,13 @@ function getPageMetaData(page: AuthPage) {
       return {
         title: "Sign up",
         description:
-          "You are one step away from re-defining how you manage your tasks",
+          "You are one step away from re-defining how you manage your tasks.",
       };
 
     case "log-in":
       return {
         title: "Log in",
-        description:
-          "Welcome back, let's continue your journey to a thriving art business.",
+        description: "Welcome back, let's continue your journey.",
       };
   }
 }

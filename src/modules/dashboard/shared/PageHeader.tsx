@@ -124,7 +124,7 @@ export default function PageHeader({
       {loadingButtonProps && (
         <LoadingButton
           {...loadingButtonProps}
-          component={loadingButtonProps.href ? NextLink : LoadingButton} // can't pass undefined for some reason
+          component={loadingButtonProps.href ? NextLink : LoadingButton}
           variant="contained"
           size="large"
           disableElevation

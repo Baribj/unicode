@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Divider,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -17,7 +16,6 @@ function truncateText(text: string) {
 }
 
 export default function TaskCard({
-  id,
   title,
   description,
   status,
@@ -73,8 +71,10 @@ export default function TaskCard({
         {loading && <CircularProgress size={25} />}
 
         {status === "completed" && !loading && (
-          <div className={`${status}`}>
-            <div className="checkmark"></div>
+          <div className="task-completed-checkmark-container">
+            <div className={`${status}`}>
+              <div className="checkmark"></div>
+            </div>
           </div>
         )}
 

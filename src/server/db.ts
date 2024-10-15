@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 
 declare global {
+  // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
@@ -14,6 +15,7 @@ if (!global._mongoClientPromise) {
   global._mongoClientPromise = dbClient.connect();
 }
 
+// eslint-disable-next-line prefer-const
 dbClientPromise = global._mongoClientPromise;
 
 export async function getDb() {

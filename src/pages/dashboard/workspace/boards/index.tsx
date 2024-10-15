@@ -3,7 +3,7 @@ import PageHeader from "@/modules/dashboard/shared/PageHeader";
 import Head from "next/head";
 import { getPageTitle } from "@/modules/shared/utils/getPageTitle";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { Box, Grid2 } from "@mui/material";
+import { Grid2 } from "@mui/material";
 import { Board } from "@/schema/Board";
 import BoardCard from "@/modules/dashboard/boards/BoardCard";
 import { getSession } from "next-auth/react";
@@ -75,54 +75,3 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     throw err;
   }
 }
-
-const boards = [
-  {
-    id: "1",
-    title: "The Ultimate Product Design Hub The Ultimate Product Design Hub",
-    description:
-      "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
-    user: {
-      id: "11",
-      name: "Ahmed",
-    },
-    type: "engineering",
-    createdAt: "15-05-2024",
-  },
-  {
-    id: "2",
-    title: "The Ultimate Product Design Hub",
-    description:
-      "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
-    user: {
-      id: "11",
-      name: "Ahmed",
-    },
-    type: "product",
-    createdAt: "15-05-2024",
-  },
-  {
-    id: "3",
-    title: "The Ultimate Product Design Hub",
-    description:
-      "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product. Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
-    user: {
-      id: "11",
-      name: "Ahmed",
-    },
-    type: "design",
-    createdAt: "15-05-2024",
-  },
-  {
-    id: "4",
-    title: "The Ultimate Product Design Hub",
-    description:
-      "Your vision, our innovation. This board is dedicated to creating the most groundbreaking product.",
-    user: {
-      id: "11",
-      name: "Ahmed",
-    },
-    type: "qa",
-    createdAt: "15-05-2024",
-  },
-];

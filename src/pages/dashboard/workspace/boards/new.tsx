@@ -8,6 +8,8 @@ import { Formik } from "formik";
 import useFetch from "@/modules/shared/hooks/useFetch";
 import { getBoardTypeInfo } from "@/modules/dashboard/boards/utils/getBoardTypeTitle";
 import { useRouter } from "next/router";
+import { getSession } from "next-auth/react";
+import { GetServerSidePropsContext } from "next";
 
 const initialValues: NewBoard = {
   title: "",
@@ -36,7 +38,7 @@ export default function NewBoards() {
             { showSuccessSnackbar: true },
             { method: "POST", body: values }
           )
-            .then((res) => {
+            .then(() => {
               router.push("");
             })
             .catch((err) => {
@@ -142,20 +144,23 @@ export default function NewBoards() {
   );
 }
 
-/* export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<{ props: Props }> {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
-    const res = await fetchWrapper<ProductSummary[]>("products", {}, context);
+    const session = await getSession(context);
 
-    const products = res.result;
-
-    const count = res.pagination.count;
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/accounts/log-in",
+          permanent: false,
+        },
+      };
+    }
 
     return {
-      props: { products, count },
+      props: {},
     };
   } catch (err) {
     throw err;
   }
-} */
+}

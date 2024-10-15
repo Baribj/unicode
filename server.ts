@@ -28,10 +28,9 @@ app.prepare().then(() => {
     io = httpServer["io"];
   }
 
-  // All Next.js requests
   server.all("*", (req, res) => handle(req, res));
 
-  httpServer.listen(3000, () => {
+  httpServer.listen(process.env.PORT, () => {
     console.log("Server running on http://localhost:3000");
   });
 });

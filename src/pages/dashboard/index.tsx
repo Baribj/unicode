@@ -5,8 +5,6 @@ import Head from "next/head";
 import { getPageTitle } from "@/modules/shared/utils/getPageTitle";
 import { getSession } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
-import { PageProps } from "@/schema/PageProps";
-import { User } from "next-auth";
 import { useSelector } from "react-redux";
 import { ReduxState } from "@/features/user/userSlice";
 

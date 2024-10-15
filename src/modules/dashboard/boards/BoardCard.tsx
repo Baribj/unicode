@@ -3,7 +3,6 @@ import { Box, Button, Chip, Divider, Tooltip, Typography } from "@mui/material";
 import Link from "next/link";
 import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
 import { useMemo } from "react";
-
 import Person2RoundedIcon from "@mui/icons-material/Person2Rounded";
 import ScheduleRoundedIcon from "@mui/icons-material/ScheduleRounded";
 import { getBoardTypeInfo } from "./utils/getBoardTypeTitle";

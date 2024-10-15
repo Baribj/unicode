@@ -5,14 +5,6 @@ import { UserModel } from "@/schema/User";
 import { getDb } from "@/server/db";
 import { SessionModel } from "@/schema/Session";
 import { ObjectId } from "mongodb";
-import { error } from "console";
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-}
 
 export const authOptions: NextAuthOptions = {
   providers: [

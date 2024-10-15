@@ -41,7 +41,6 @@ export default function DropDownBase({
     >
       <ClickAwayListener onClickAway={handleClose}>
         <Paper
-          /*  elevation={3} */
           sx={{
             minWidth: "150px",
             p: 2,
